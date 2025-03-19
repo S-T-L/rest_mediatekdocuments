@@ -1,0 +1,16 @@
+[2025-03-10 10:09:27] Début insertion abonnement
+Champs commande : {"id":"15","dateCommande":"2025-03-10","montant":15}
+Champs abonnement : {"id":"15","dateFinAbonnement":"2025-03-28","idRevue":"10011"}
+Erreur lors de l'insertion de la commande.
+[2025-03-11 08:47:40] Début insertion abonnement
+Champs commande : {"id":"15","dateCommande":"2025-03-11","montant":15}
+Champs abonnement : {"id":"15","dateFinAbonnement":"2025-03-30","idRevue":"10011"}
+Erreur lors de l'insertion de la commande.
+[2025-03-11 09:17:17] Début insertion abonnement
+Champs commande : {"id":"15","dateCommande":"2025-03-11","montant":15}
+Champs abonnement : {"id":"15","dateFinAbonnement":"2025-03-15","idRevue":"10011"}
+Erreur lors de l'insertion de la commande.
+[2025-03-17 15:11:37] Début insertion abonnement
+Champs commande : {"id":"16","dateCommande":"2025-03-10","montant":20}
+Champs abonnement : {"id":"16","dateFinAbonnement":"2025-03-30","idRevue":"10006"}
+Erreur lors de l'insertion de la commande.
