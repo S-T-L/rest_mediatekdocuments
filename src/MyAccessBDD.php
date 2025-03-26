@@ -192,6 +192,7 @@ class MyAccessBDD extends AccessBDD {
         if (is_null($id)) {
             return null;
         }
+        
         // construction de la requête
         $requete = "update $table set ";
         foreach ($champs as $key => $value) {
@@ -201,6 +202,7 @@ class MyAccessBDD extends AccessBDD {
         $requete = substr($requete, 0, strlen($requete) - 1);
         $champs["id"] = $id;
         $requete .= " where id=:id;";
+        
         return $this->conn->updateBDD($requete, $champs);
     }
 
@@ -231,6 +233,9 @@ class MyAccessBDD extends AccessBDD {
      * @return array|null
      */
     private function selectCommandesDocument(?array $champs): ?array {
+        if (empty($champs) || !isset($champs['idLivreDvd'])) {
+            return null; // Ou un tableau vide [] si vous voulez éviter les erreurs ailleurs
+        }
         $champNecessaire['idLivreDvd'] = $champs['idLivreDvd'];
         $requete = "Select cd.id, c.dateCommande, c.montant, cd.nbExemplaire, cd.idLivreDvd, ";
         $requete .= "cd.idSuivi, s.libelle ";
@@ -241,7 +246,11 @@ class MyAccessBDD extends AccessBDD {
         return $this->conn->queryBDD($requete, $champNecessaire);
     }
 
-    
+    /**
+     * récupère les commandes de revues
+     * @param array|null $champ
+     * @return array|null
+     */
     private function selectAbonnementsRevue(?array $champ): ?array {
         $champNecessaire['idRevue'] = $champ['idRevue'];
         $requete = "Select a.id, c.dateCommande, c.montant, a.dateFinAbonnement, a.idRevue ";
@@ -290,8 +299,6 @@ class MyAccessBDD extends AccessBDD {
         $requete .= "order by titre ";
         return $this->conn->queryBDD($requete);
     }
-
-   
 
     /**
      * récupère toutes les lignes de la table Revue et les tables associées
@@ -346,11 +353,11 @@ class MyAccessBDD extends AccessBDD {
         return $this->conn->queryBDD($requete, $champNecessaire);
     }
 
-   /**
-    * Insertion d'une commande de livre ou dvd
-    * @param array|null $champs
-    * @return int|null
-    */
+    /**
+     * Insertion d'une commande de livre ou dvd
+     * @param array|null $champs
+     * @return int|null
+     */
     private function insertCommande(?array $champs): ?int {
 
         $champsCommande = ["id" => $champs["Id"], "dateCommande" => $champs["DateCommande"],
@@ -364,7 +371,11 @@ class MyAccessBDD extends AccessBDD {
         return $this->insertOneTupleOneTable("commandedocument", $champsCommandeDocument);
     }
 
-    
+    /**
+     * Insertion d'une commande de revue 
+     * @param array|null $champs
+     * @return int|null
+     */
     private function insertAbonnement(?array $champs): ?int {
 
         $champsCommande = ["id" => $champs["Id"], "dateCommande" => $champs["DateCommande"],
@@ -373,7 +384,7 @@ class MyAccessBDD extends AccessBDD {
             "idRevue" => $champs["IdRevue"]];
 
         $result = $this->insertOneTupleOneTable("commande", $champsCommande);
-        
+
         if ($result == null || $result == false) {
             return null;
         }
@@ -381,7 +392,7 @@ class MyAccessBDD extends AccessBDD {
     }
 
     /**
-     * Suppression d'une commande
+     * Suppression d'une commande de livre ou dvd
      * @param array|null $champs
      * @return int|null
      */
@@ -395,13 +406,18 @@ class MyAccessBDD extends AccessBDD {
         return $this->deleteTuplesOneTable("commande", $champNecessaire);
     }
 
+    /**
+     * Suppression d'une commande de revue
+     * @param array|null $champs
+     * @return int|null
+     */
     private function deleteAbonnementRevue(?array $champs): ?int {
         $champNecessaire['id'] = $champs['id'];
-        $result = $this->deleteTuplesOneTable("commande", $champNecessaire);
+        $result = $this->deleteTuplesOneTable("abonnement", $champNecessaire);
         if ($result == null || $result == false) {
             return null;
         }
-        return $this->deleteTuplesOneTable("abonnement", $champNecessaire);
+        return $this->deleteTuplesOneTable("commande", $champNecessaire);
     }
 
     /**
