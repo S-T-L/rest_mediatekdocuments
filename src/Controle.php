@@ -36,10 +36,7 @@ class Controle {
      * @param array|null $champs
      */
     public function demande(string $methodeHTTP, string $table, ?string $id, ?array $champs) {
-        error_log("Méthode HTTP: " . $methodeHTTP);
-        error_log("Table: " . $table);
-        error_log("ID: " . ($id ?? "NULL"));
-        error_log("Champs reçus: " . print_r($champs, true));
+        
         $result = $this->myAaccessBDD->demande($methodeHTTP, $table, $id, $champs);
         $this->controleResult($result);
     }

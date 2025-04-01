@@ -47,6 +47,7 @@ class MyAccessBDD extends AccessBDD {
                 return $this->selectAbonnementsRevue($champs);
             case "utilisateur":
                 return $this->selectUtilisateur($champs);
+            
             case "genre" :
             case "public" :
             case "rayon" :
@@ -234,7 +235,7 @@ class MyAccessBDD extends AccessBDD {
      */
     private function selectCommandesDocument(?array $champs): ?array {
         if (empty($champs) || !isset($champs['idLivreDvd'])) {
-            return null; // Ou un tableau vide [] si vous voulez éviter les erreurs ailleurs
+            return null; 
         }
         $champNecessaire['idLivreDvd'] = $champs['idLivreDvd'];
         $requete = "Select cd.id, c.dateCommande, c.montant, cd.nbExemplaire, cd.idLivreDvd, ";
@@ -259,7 +260,7 @@ class MyAccessBDD extends AccessBDD {
         $requete .= "order by c.dateCommande DESC";
         return $this->conn->queryBDD($requete, $champNecessaire);
     }
-
+	
     /**
      * récupère toutes les lignes d'une table simple (qui contient juste id et libelle)
      * @param string $table
